@@ -62,13 +62,7 @@ func (plat Platform) MarshalJSON() ([]byte, error) {
 		buffer := bytes.NewBufferString("all")
 		return buffer.Bytes(), nil
 	}
-
-	jsonValue, err := json.Marshal(plat)
-	if err != nil {
-		return nil, err
-	}
-
-	return jsonValue, nil
+	return json.Marshal(plat.DeviceTypes)
 }
 
 // DeviceType is

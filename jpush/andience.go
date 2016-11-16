@@ -64,12 +64,7 @@ func (audience Audience) MarshalJSON() ([]byte, error) {
 		buffer := bytes.NewBufferString("all")
 		return buffer.Bytes(), nil
 	}
-	jsonValue, err := json.Marshal(audience)
-	if err != nil {
-		return nil, err
-	}
-
-	return jsonValue, nil
+	return json.Marshal(audience.Audiences)
 }
 
 func (audience *Audience) addWithAudienceTarget(target *AudienceTarget) *Audience {
