@@ -18,6 +18,7 @@ func (n *Notification) SetAlert(alert string) *Notification {
 func (n *Notification) SetAndroid(alert string, title string) *Notification {
 	p := NewAndroidNodification()
 	p.SetAlert(alert)
+	p.SetTitle(title)
 	n.Android = p
 	n.Alert = alert
 	return n
