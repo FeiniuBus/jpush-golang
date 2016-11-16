@@ -1,8 +1,21 @@
 package jpush
 
+import (
+	"bytes"
+	"encoding/json"
+)
+
 // Audience is
 type Audience struct {
 	Audiences map[string][]string `json:"dictionary,omitempty"`
+	isAll     bool
+}
+
+// SetAll is
+func (audience *Audience) SetAll() *Audience {
+	audience.isAll = true
+	audience.Audiences = nil
+	return audience
 }
 
 // SetTag is
@@ -45,8 +58,26 @@ func (audience *Audience) SetRegistrationID(value ...string) *Audience {
 	return audience
 }
 
+// MarshalJSON is
+func (audience Audience) MarshalJSON() ([]byte, error) {
+	if audience.isAll {
+		buffer := bytes.NewBufferString("all")
+		return buffer.Bytes(), nil
+	}
+	jsonValue, err := json.Marshal(audience)
+	if err != nil {
+		return nil, err
+	}
+
+	return jsonValue, nil
+}
+
 func (audience *Audience) addWithAudienceTarget(target *AudienceTarget) *Audience {
 	if target.ValueBuilder != nil {
+		if audience.isAll {
+			audience.isAll = false
+		}
+
 		if audience.Audiences == nil {
 			audience.Audiences = make(map[string][]string)
 		}
