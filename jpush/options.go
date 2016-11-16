@@ -14,7 +14,7 @@ func NewOptions() *Options {
 	p := new(Options)
 	p.SendNo = 0
 	p.OverrideMsgID = 0
-	p.TimeToLive = -1
+	p.TimeToLive = 0
 	p.BigPushDuration = 0
 	p.ApnsProduction = false
 

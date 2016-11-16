@@ -61,7 +61,7 @@ func (an *AndroidNodification) AddExtra(key string, value interface{}) (*Android
 func NewAndroidNodification() *AndroidNodification {
 	p := new(AndroidNodification)
 	p.Alert = ""
-	p.Extras = nil
+	p.Extras = make(map[string]interface{})
 	p.Title = ""
 	p.BuilderID = 0
 

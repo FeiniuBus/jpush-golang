@@ -57,7 +57,7 @@ func NewWinphoneNotification() *WinphoneNotification {
 	p.Alert = ""
 	p.Title = ""
 	p.OpenPage = ""
-	p.Extras = nil
+	p.Extras = make(map[string]interface{})
 
 	return p
 }

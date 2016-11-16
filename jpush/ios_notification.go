@@ -100,7 +100,7 @@ func (ios *IosNotification) AddExtra(key string, value interface{}) (*IosNotific
 func NewIosNotification() *IosNotification {
 	p := new(IosNotification)
 	p.Alert = nil
-	p.Extras = nil
+	p.Extras = make(map[string]interface{})
 	p.ContentAvailable = false
 	p.Category = nil
 	p.Badge = "+1"
