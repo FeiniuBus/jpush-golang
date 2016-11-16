@@ -38,7 +38,7 @@ func (client *PushClient) sendPost(uri string, body string) error {
 	}
 
 	request.SetBasicAuth(client.AppKey, client.MasterSecret)
-	request.Header.Add("Conetent-type", "application/json")
+	request.Header.Add("Content-Type", "application/json")
 	httpClient := &http.Client{}
 	resp, err := httpClient.Do(request)
 	if err != nil {
