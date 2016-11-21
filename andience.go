@@ -42,6 +42,14 @@ func (audience *Audience) SetAlias(value ...string) *Audience {
 	return audience
 }
 
+// SetAliasWithArray is
+func (audience *Audience) SetAliasWithArray(values []string) *Audience {
+	target := new(AudienceTarget)
+	target.SetAlias(values)
+	audience.addWithAudienceTarget(target)
+	return audience
+}
+
 // SetSegment is
 func (audience *Audience) SetSegment(value ...string) *Audience {
 	target := new(AudienceTarget)
