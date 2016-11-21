@@ -26,10 +26,26 @@ func (audience *Audience) SetTag(value ...string) *Audience {
 	return audience
 }
 
+// SetTagWithArray is
+func (audience *Audience) SetTagWithArray(values []string) *Audience {
+	target := new(AudienceTarget)
+	target.SetTag(values)
+	audience.addWithAudienceTarget(target)
+	return audience
+}
+
 // SetTagAnd is
 func (audience *Audience) SetTagAnd(value ...string) *Audience {
 	target := new(AudienceTarget)
 	target.SetTagAnd(value)
+	audience.addWithAudienceTarget(target)
+	return audience
+}
+
+// SetTagAndWithArray is
+func (audience *Audience) SetTagAndWithArray(values []string) *Audience {
+	target := new(AudienceTarget)
+	target.SetTagAnd(values)
 	audience.addWithAudienceTarget(target)
 	return audience
 }
