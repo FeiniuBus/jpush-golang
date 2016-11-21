@@ -15,31 +15,31 @@ func (n *Notification) SetAlert(alert string) *Notification {
 }
 
 // SetAndroid is
-func (n *Notification) SetAndroid(alert string, title string) *Notification {
+func (n *Notification) SetAndroid(alert string, title string) *AndroidNodification {
 	p := NewAndroidNodification()
 	p.SetAlert(alert)
 	p.SetTitle(title)
 	n.Android = p
 	n.Alert = alert
-	return n
+	return p
 }
 
 // SetIos is
-func (n *Notification) SetIos(alert string) *Notification {
+func (n *Notification) SetIos(alert string) *IosNotification {
 	p := NewIosNotification()
 	p.SetAlert(alert)
 	n.Ios = p
 	n.Alert = alert
-	return n
+	return p
 }
 
 // SetWinphone is
-func (n *Notification) SetWinphone(alert string) *Notification {
+func (n *Notification) SetWinphone(alert string) *WinphoneNotification {
 	p := NewWinphoneNotification()
 	p.SetAlert(alert)
 	n.Winphone = p
 	n.Alert = alert
-	return n
+	return p
 }
 
 // NewNotification is

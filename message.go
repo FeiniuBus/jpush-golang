@@ -7,9 +7,9 @@ import (
 
 // Message is
 type Message struct {
-	Title       string                 `json:"title,omitempty"`
+	Title       interface{}            `json:"title,omitempty,string"`
 	Content     string                 `json:"msg_content,omitempty"`
-	ContentType string                 `json:"content_type,omitempty"`
+	ContentType interface{}            `json:"content_type,omitempty,string"`
 	Extras      map[string]interface{} `json:"extras,omitempty"`
 }
 
@@ -54,9 +54,9 @@ func (m *Message) AddExtra(key string, value interface{}) (*Message, error) {
 // NewMessage is
 func NewMessage(c string) *Message {
 	p := new(Message)
-	p.Title = ""
+	p.Title = nil
 	p.Content = c
-	p.ContentType = ""
+	p.ContentType = nil
 	p.Extras = nil
 
 	return p
