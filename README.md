@@ -1,5 +1,5 @@
 # jpush-golang
-JPush sdk repository for Golang
+[JPush](https://www.jiguang.cn/) REST API sdk for Golang
 
 ## Installation
 Simple install the package to your [$GOPATH](http://code.google.com/p/go-wiki/wiki/GOPATH "GOPATH") with the [go tool](http://golang.org/cmd/go/ "go command") from shell:
