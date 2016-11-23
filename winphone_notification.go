@@ -2,6 +2,7 @@ package jpush
 
 import (
 	"errors"
+	"fmt"
 	"reflect"
 )
 
@@ -58,7 +59,8 @@ func (wn *WinphoneNotification) AddExtra(key string, value interface{}) (*Winpho
 	case reflect.Bool:
 		wn.Extras[key] = value
 	default:
-		return wn, errors.New("错误的数据类型")
+		m := fmt.Sprintf("错误的数据类型, %s", t.Kind())
+		return wn, errors.New(m)
 	}
 
 	return wn, nil

@@ -2,6 +2,7 @@ package jpush
 
 import (
 	"errors"
+	"fmt"
 	"math"
 	"reflect"
 )
@@ -103,7 +104,8 @@ func (ios *IosNotification) AddExtra(key string, value interface{}) (*IosNotific
 	case reflect.Bool:
 		ios.Extras[key] = value
 	default:
-		return ios, errors.New("错误的数据类型")
+		m := fmt.Sprintf("错误的数据类型, %s", t.Kind())
+		return ios, errors.New(m)
 	}
 
 	return ios, nil

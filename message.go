@@ -2,6 +2,7 @@ package jpush
 
 import (
 	"errors"
+	"fmt"
 	"reflect"
 )
 
@@ -58,7 +59,8 @@ func (m *Message) AddExtra(key string, value interface{}) (*Message, error) {
 	case reflect.Bool:
 		m.Extras[key] = value
 	default:
-		return m, errors.New("错误的数据类型")
+		s := fmt.Sprintf("错误的数据类型, %s", t.Kind())
+		return m, errors.New(s)
 	}
 
 	return m, nil

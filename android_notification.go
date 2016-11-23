@@ -2,6 +2,7 @@ package jpush
 
 import (
 	"errors"
+	"fmt"
 	"reflect"
 )
 
@@ -64,7 +65,8 @@ func (an *AndroidNodification) AddExtra(key string, value interface{}) (*Android
 	case reflect.Bool:
 		an.Extras[key] = value
 	default:
-		return an, errors.New("错误的数据类型")
+		m := fmt.Sprintf("错误的数据类型, %s", t.Kind())
+		return an, errors.New(m)
 	}
 
 	return an, nil
