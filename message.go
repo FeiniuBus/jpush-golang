@@ -51,6 +51,10 @@ func (m *Message) AddExtra(key string, value interface{}) (*Message, error) {
 		fallthrough
 	case reflect.String:
 		fallthrough
+	case reflect.Int:
+		fallthrough
+	case reflect.Uint:
+		fallthrough
 	case reflect.Bool:
 		m.Extras[key] = value
 	default:

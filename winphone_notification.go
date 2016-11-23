@@ -51,6 +51,10 @@ func (wn *WinphoneNotification) AddExtra(key string, value interface{}) (*Winpho
 		fallthrough
 	case reflect.String:
 		fallthrough
+	case reflect.Int:
+		fallthrough
+	case reflect.Uint:
+		fallthrough
 	case reflect.Bool:
 		wn.Extras[key] = value
 	default:

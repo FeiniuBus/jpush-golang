@@ -96,6 +96,10 @@ func (ios *IosNotification) AddExtra(key string, value interface{}) (*IosNotific
 		fallthrough
 	case reflect.String:
 		fallthrough
+	case reflect.Int:
+		fallthrough
+	case reflect.Uint:
+		fallthrough
 	case reflect.Bool:
 		ios.Extras[key] = value
 	default:
