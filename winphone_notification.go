@@ -34,14 +34,23 @@ func (wn *WinphoneNotification) AddExtra(key string, value interface{}) (*Winpho
 	var t = reflect.TypeOf(value)
 	switch t.Kind() {
 	case reflect.Int32:
+		fallthrough
 	case reflect.Uint32:
+		fallthrough
 	case reflect.Int16:
+		fallthrough
 	case reflect.Uint16:
+		fallthrough
 	case reflect.Int8:
+		fallthrough
 	case reflect.Uint8:
+		fallthrough
 	case reflect.Int64:
+		fallthrough
 	case reflect.Uint64:
+		fallthrough
 	case reflect.String:
+		fallthrough
 	case reflect.Bool:
 		wn.Extras[key] = value
 	default:
