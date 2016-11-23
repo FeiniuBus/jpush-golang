@@ -62,6 +62,10 @@ func (an *AndroidNodification) AddExtra(key string, value interface{}) (*Android
 		fallthrough
 	case reflect.Uint:
 		fallthrough
+	case reflect.Float32:
+		fallthrough
+	case reflect.Float64:
+		fallthrough
 	case reflect.Bool:
 		an.Extras[key] = value
 	default:
