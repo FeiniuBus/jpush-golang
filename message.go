@@ -15,24 +15,22 @@ type Message struct {
 }
 
 // SetTitle is
-func (m *Message) SetTitle(title string) *Message {
+func (m *Message) SetTitle(title string) {
 	m.Title = title
-	return m
 }
 
 // SetContentType is
-func (m *Message) SetContentType(ctype string) *Message {
+func (m *Message) SetContentType(ctype string) {
 	m.ContentType = ctype
-	return m
 }
 
 // AddExtra is
-func (m *Message) AddExtra(key string, value interface{}) (*Message, error) {
+func (m *Message) AddExtra(key string, value interface{}) error {
 	if m.Extras == nil {
 		m.Extras = make(map[string]interface{})
 	}
 
-	var t = reflect.TypeOf(value)
+	t := reflect.TypeOf(value)
 	switch t.Kind() {
 	case reflect.Int32:
 		fallthrough
@@ -64,10 +62,10 @@ func (m *Message) AddExtra(key string, value interface{}) (*Message, error) {
 		m.Extras[key] = value
 	default:
 		s := fmt.Sprintf("错误的数据类型, %s", t.Kind())
-		return m, errors.New(s)
+		return errors.New(s)
 	}
 
-	return m, nil
+	return nil
 }
 
 // NewMessage is

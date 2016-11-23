@@ -2,46 +2,42 @@ package jpush
 
 import (
 	"errors"
-	"fmt"
 	"math"
-	"reflect"
 )
 
 // IosNotification is
 type IosNotification struct {
-	Alert            interface{}            `json:"alert,omitempty"`
-	Extras           map[string]interface{} `json:"extras,omitempty"`
-	Sound            interface{}            `json:"sound,omitempty"`
-	Badge            interface{}            `json:"badge,omitempty"`
-	ContentAvailable bool                   `json:"content-available"`
-	Category         interface{}            `json:"category,omitempty"`
+	platformNotification
+	Sound            interface{} `json:"sound,omitempty"`
+	Badge            interface{} `json:"badge,omitempty"`
+	ContentAvailable bool        `json:"content-available"`
+	Category         interface{} `json:"category,omitempty"`
 }
 
 //SetSound is
-func (ios *IosNotification) SetSound(sound string) *IosNotification {
+func (ios *IosNotification) SetSound(sound string) {
 	ios.Sound = sound
-	return ios
 }
 
 // AutoBadge is
-func (ios *IosNotification) AutoBadge() (*IosNotification, error) {
+func (ios *IosNotification) AutoBadge() error {
 	return ios.IncBadge(1)
 }
 
 // SetBadge is
-func (ios *IosNotification) SetBadge(badge int) (*IosNotification, error) {
+func (ios *IosNotification) SetBadge(badge int) error {
 	if math.Abs(float64(badge)) > 99999 {
-		return ios, errors.New("错误的badge值")
+		return errors.New("错误的badge值")
 	}
 
 	ios.Badge = string(badge)
-	return ios, nil
+	return nil
 }
 
 // IncBadge is
-func (ios *IosNotification) IncBadge(badge int) (*IosNotification, error) {
+func (ios *IosNotification) IncBadge(badge int) error {
 	if math.Abs(float64(badge)) > 99999 {
-		return ios, errors.New("错误的badge值")
+		return errors.New("错误的badge值")
 	}
 
 	if badge >= 0 {
@@ -50,69 +46,17 @@ func (ios *IosNotification) IncBadge(badge int) (*IosNotification, error) {
 		ios.Badge = string(badge)
 	}
 
-	return ios, nil
-}
-
-// SetAlert is
-func (ios *IosNotification) SetAlert(alert string) *IosNotification {
-	ios.Alert = alert
-	return ios
+	return nil
 }
 
 // SetContentAvailable is
-func (ios *IosNotification) SetContentAvailable(available bool) *IosNotification {
+func (ios *IosNotification) SetContentAvailable(available bool) {
 	ios.ContentAvailable = available
-	return ios
 }
 
 // SetCategory is
-func (ios *IosNotification) SetCategory(category string) *IosNotification {
+func (ios *IosNotification) SetCategory(category string) {
 	ios.Category = category
-	return ios
-}
-
-// AddExtra is
-func (ios *IosNotification) AddExtra(key string, value interface{}) (*IosNotification, error) {
-	if ios.Extras == nil {
-		ios.Extras = make(map[string]interface{})
-	}
-
-	var t = reflect.TypeOf(value)
-	switch t.Kind() {
-	case reflect.Int32:
-		fallthrough
-	case reflect.Uint32:
-		fallthrough
-	case reflect.Int16:
-		fallthrough
-	case reflect.Uint16:
-		fallthrough
-	case reflect.Int8:
-		fallthrough
-	case reflect.Uint8:
-		fallthrough
-	case reflect.Int64:
-		fallthrough
-	case reflect.Uint64:
-		fallthrough
-	case reflect.String:
-		fallthrough
-	case reflect.Int:
-		fallthrough
-	case reflect.Uint:
-		fallthrough
-	case reflect.Float32:
-		fallthrough
-	case reflect.Float64:
-		fallthrough
-	case reflect.Bool:
-		ios.Extras[key] = value
-	default:
-		m := fmt.Sprintf("错误的数据类型, %s", t.Kind())
-		return ios, errors.New(m)
-	}
-
-	return ios, nil
 }
 
 // NewIosNotification is

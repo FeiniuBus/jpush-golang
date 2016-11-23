@@ -9,37 +9,33 @@ type Notification struct {
 }
 
 // SetAlert is
-func (n *Notification) SetAlert(alert string) *Notification {
+func (n *Notification) SetAlert(alert string) {
 	n.Alert = alert
-	return n
 }
 
 // SetAndroid is
-func (n *Notification) SetAndroid(alert string, title string) *AndroidNodification {
+func (n *Notification) SetAndroid(alert string, title string) {
 	p := NewAndroidNodification()
 	p.SetAlert(alert)
 	p.SetTitle(title)
 	n.Android = p
 	n.Alert = alert
-	return p
 }
 
 // SetIos is
-func (n *Notification) SetIos(alert string) *IosNotification {
+func (n *Notification) SetIos(alert string) {
 	p := NewIosNotification()
 	p.SetAlert(alert)
 	n.Ios = p
 	n.Alert = alert
-	return p
 }
 
 // SetWinphone is
-func (n *Notification) SetWinphone(alert string) *WinphoneNotification {
+func (n *Notification) SetWinphone(alert string) {
 	p := NewWinphoneNotification()
 	p.SetAlert(alert)
 	n.Winphone = p
 	n.Alert = alert
-	return p
 }
 
 // NewNotification is

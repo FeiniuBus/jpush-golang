@@ -12,13 +12,13 @@ type Platform struct {
 }
 
 // SetAll is
-func (plat *Platform) SetAll() *Platform {
+func (plat *Platform) SetAll() {
+	plat.DeviceTypes = nil
 	plat.isAll = true
-	return plat
 }
 
 // Ios is
-func (plat *Platform) Ios() *Platform {
+func (plat *Platform) Ios() {
 	if plat.isAll {
 		plat.isAll = false
 	}
@@ -27,11 +27,10 @@ func (plat *Platform) Ios() *Platform {
 	}
 
 	plat.DeviceTypes = append(plat.DeviceTypes, DeviceType.String(Ios))
-	return plat
 }
 
 // Android is
-func (plat *Platform) Android() *Platform {
+func (plat *Platform) Android() {
 	if plat.isAll {
 		plat.isAll = false
 	}
@@ -40,11 +39,10 @@ func (plat *Platform) Android() *Platform {
 	}
 
 	plat.DeviceTypes = append(plat.DeviceTypes, DeviceType.String(Android))
-	return plat
 }
 
 // Winphone is
-func (plat *Platform) Winphone() *Platform {
+func (plat *Platform) Winphone() {
 	if plat.isAll {
 		plat.isAll = false
 	}
@@ -53,7 +51,6 @@ func (plat *Platform) Winphone() *Platform {
 	}
 
 	plat.DeviceTypes = append(plat.DeviceTypes, DeviceType.String(Winphone))
-	return plat
 }
 
 // MarshalJSON is

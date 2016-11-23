@@ -12,74 +12,65 @@ type Audience struct {
 }
 
 // SetAll is
-func (audience *Audience) SetAll() *Audience {
+func (audience *Audience) SetAll() {
 	audience.isAll = true
 	audience.Audiences = nil
-	return audience
 }
 
 // SetTag is
-func (audience *Audience) SetTag(value ...string) *Audience {
+func (audience *Audience) SetTag(value ...string) {
 	target := new(AudienceTarget)
 	target.SetTag(value)
 	audience.addWithAudienceTarget(target)
-	return audience
 }
 
 // SetTagWithArray is
-func (audience *Audience) SetTagWithArray(values []string) *Audience {
+func (audience *Audience) SetTagWithArray(values []string) {
 	target := new(AudienceTarget)
 	target.SetTag(values)
 	audience.addWithAudienceTarget(target)
-	return audience
 }
 
 // SetTagAnd is
-func (audience *Audience) SetTagAnd(value ...string) *Audience {
+func (audience *Audience) SetTagAnd(value ...string) {
 	target := new(AudienceTarget)
 	target.SetTagAnd(value)
 	audience.addWithAudienceTarget(target)
-	return audience
 }
 
 // SetTagAndWithArray is
-func (audience *Audience) SetTagAndWithArray(values []string) *Audience {
+func (audience *Audience) SetTagAndWithArray(values []string) {
 	target := new(AudienceTarget)
 	target.SetTagAnd(values)
 	audience.addWithAudienceTarget(target)
-	return audience
 }
 
 // SetAlias is
-func (audience *Audience) SetAlias(value ...string) *Audience {
+func (audience *Audience) SetAlias(value ...string) {
 	target := new(AudienceTarget)
 	target.SetAlias(value)
 	audience.addWithAudienceTarget(target)
-	return audience
 }
 
 // SetAliasWithArray is
-func (audience *Audience) SetAliasWithArray(values []string) *Audience {
+func (audience *Audience) SetAliasWithArray(values []string) {
 	target := new(AudienceTarget)
 	target.SetAlias(values)
 	audience.addWithAudienceTarget(target)
-	return audience
 }
 
 // SetSegment is
-func (audience *Audience) SetSegment(value ...string) *Audience {
+func (audience *Audience) SetSegment(value ...string) {
 	target := new(AudienceTarget)
 	target.SetSegment(value)
 	audience.addWithAudienceTarget(target)
-	return audience
 }
 
 // SetRegistrationID is
-func (audience *Audience) SetRegistrationID(value ...string) *Audience {
+func (audience *Audience) SetRegistrationID(value ...string) {
 	target := new(AudienceTarget)
 	target.SetRegistrationID(value)
 	audience.addWithAudienceTarget(target)
-	return audience
 }
 
 // MarshalJSON is
@@ -91,7 +82,7 @@ func (audience Audience) MarshalJSON() ([]byte, error) {
 	return json.Marshal(audience.Audiences)
 }
 
-func (audience *Audience) addWithAudienceTarget(target *AudienceTarget) *Audience {
+func (audience *Audience) addWithAudienceTarget(target *AudienceTarget) {
 	if target.ValueBuilder != nil {
 		if audience.isAll {
 			audience.isAll = false
@@ -108,7 +99,6 @@ func (audience *Audience) addWithAudienceTarget(target *AudienceTarget) *Audienc
 			audience.Audiences[target.Type] = target.ValueBuilder
 		}
 	}
-	return audience
 }
 
 // AudienceTarget is
@@ -118,43 +108,33 @@ type AudienceTarget struct {
 }
 
 // SetTag is
-func (at *AudienceTarget) SetTag(values []string) *AudienceTarget {
+func (at *AudienceTarget) SetTag(values []string) {
 	at.Type = Tag.String()
 	at.ValueBuilder = values
-
-	return at
 }
 
 // SetTagAnd is
-func (at *AudienceTarget) SetTagAnd(values []string) *AudienceTarget {
+func (at *AudienceTarget) SetTagAnd(values []string) {
 	at.Type = TagAnd.String()
 	at.ValueBuilder = values
-
-	return at
 }
 
 // SetAlias is
-func (at *AudienceTarget) SetAlias(values []string) *AudienceTarget {
+func (at *AudienceTarget) SetAlias(values []string) {
 	at.Type = Alias.String()
 	at.ValueBuilder = values
-
-	return at
 }
 
 // SetSegment is
-func (at *AudienceTarget) SetSegment(values []string) *AudienceTarget {
+func (at *AudienceTarget) SetSegment(values []string) {
 	at.Type = Segment.String()
 	at.ValueBuilder = values
-
-	return at
 }
 
 // SetRegistrationID is
-func (at *AudienceTarget) SetRegistrationID(values []string) *AudienceTarget {
+func (at *AudienceTarget) SetRegistrationID(values []string) {
 	at.Type = RegistrationID.String()
 	at.ValueBuilder = values
-
-	return at
 }
 
 // AudienceType is
