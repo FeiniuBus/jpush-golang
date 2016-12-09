@@ -6,7 +6,7 @@ type Options struct {
 	OverrideMsgID   int64 `json:"override_msg_id,omitempty"`
 	TimeToLive      int64 `json:"time_to_live,omitempty"`
 	BigPushDuration int64 `json:"big_push_duration,omitempty"`
-	ApnsProduction  bool  `json:"apns_production,omitempty"`
+	ApnsProduction  bool  `json:"apns_production,string"`
 }
 
 // NewOptions is
