@@ -5,6 +5,7 @@ type AndroidNodification struct {
 	platformNotification
 	Title     interface{} `json:"title,omitempty"`
 	BuilderID int         `json:"builder_id"`
+	AlertType 	      `json:"alert_type"`
 }
 
 // SetTitle is
