@@ -11,21 +11,27 @@ import (
 
 const schedulePath = "https://api.jpush.cn/v3/schedules"
 
+//ScheduleClient is
 type ScheduleClient struct {
 	AppKey       string
 	MasterSecret string
 }
+
+//ScheduleCreateResponse is
 type ScheduleCreateResponse struct {
-	ScheduleId string `json:"schedule_id"`
+	ScheduleID string `json:"schedule_id"`
 	Name       string `json:"name"`
 }
+
+//SchedulePageResponse is
 type SchedulePageResponse struct {
-	TotalCount int               `json:"total_count"`
-	TotalPages int               `json:"total_pages"`
-	Page       int               `json:"page"`
-	Schedules  []SchedulePayload `json:"schedules"`
+	TotalCount int                `json:"total_count"`
+	TotalPages int                `json:"total_pages"`
+	Page       int                `json:"page"`
+	Schedules  []ScheduleResponse `json:"schedules"`
 }
 
+//CreateSchedule is
 func (s *ScheduleClient) CreateSchedule(p *SchedulePayload) (*ScheduleCreateResponse, error) {
 	body, err := json.Marshal(*p)
 	if err != nil {
@@ -44,6 +50,7 @@ func (s *ScheduleClient) CreateSchedule(p *SchedulePayload) (*ScheduleCreateResp
 	return &resp, nil
 }
 
+//UpdateSchedule is
 func (s *ScheduleClient) UpdateSchedule(p *ScheduleUpdateRequest, id string) (*SchedulePayload, error) {
 	body, err := json.Marshal(*p)
 	if err != nil {
@@ -65,6 +72,7 @@ func (s *ScheduleClient) UpdateSchedule(p *ScheduleUpdateRequest, id string) (*S
 	return &resp, nil
 }
 
+//DeleteSchedule is
 func (s *ScheduleClient) DeleteSchedule(id string) error {
 	req, err := http.NewRequest("DELETE", schedulePath+"/"+id, nil)
 	if err != nil {
@@ -77,6 +85,7 @@ func (s *ScheduleClient) DeleteSchedule(id string) error {
 	return nil
 }
 
+//Schedules is
 func (s *ScheduleClient) Schedules(page int) (*SchedulePageResponse, error) {
 	req, err := http.NewRequest("GET", schedulePath+"?page="+strconv.Itoa(page), nil)
 	if err != nil {
@@ -94,7 +103,8 @@ func (s *ScheduleClient) Schedules(page int) (*SchedulePageResponse, error) {
 	return &resp, nil
 }
 
-func (s *ScheduleClient) Schedule(id string) (*SchedulePayload, error) {
+//Schedule is
+func (s *ScheduleClient) Schedule(id string) (*ScheduleResponse, error) {
 	req, err := http.NewRequest("GET", schedulePath+"/"+id, nil)
 	if err != nil {
 		return nil, err
@@ -103,7 +113,7 @@ func (s *ScheduleClient) Schedule(id string) (*SchedulePayload, error) {
 	if err != nil {
 		return nil, err
 	}
-	var resp SchedulePayload
+	var resp ScheduleResponse
 	err = json.Unmarshal(r, &resp)
 	if err != nil {
 		return nil, err
@@ -130,6 +140,7 @@ func (s *ScheduleClient) doRequest(req *http.Request) ([]byte, error) {
 	return result, nil
 }
 
+//NewScheduleClient is
 func NewScheduleClient(appkey, secret string) *ScheduleClient {
 	s := new(ScheduleClient)
 	s.AppKey = appkey

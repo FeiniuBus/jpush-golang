@@ -4,51 +4,139 @@ import (
 	"bytes"
 	"encoding/json"
 	"strconv"
+	"strings"
+	"time"
 )
 
+//SchedulePayload is
 type SchedulePayload struct {
 	Name    string       `json:"name"`
 	Enabled bool         `json:"enabled"`
 	Trigger *TriggerNode `json:"trigger"`
-	Push    *PushNode    `json:"push"`
+	Push    *PushPayload `json:"push"`
 }
+
+//TriggerNode is
 type TriggerNode struct {
-	Single     *TriggerSingleNode
-	Periodical *TriggerPeriodicalNode
+	Single     *TriggerSingleNode     `json:"single"`
+	Periodical *TriggerPeriodicalNode `json:"periodical"`
 }
+
+//MarshalJSON is
+func (t TriggerNode) MarshalJSON() ([]byte, error) {
+	var j []byte
+	var err error
+	buff := bytes.NewBufferString("{")
+	if t.Single != nil {
+		j, err = json.Marshal(t.Single)
+		buff.WriteString("\"single\":")
+		buff.Write(j)
+	}
+	if t.Single != nil && t.Periodical != nil {
+		buff.WriteString(",")
+	}
+	if t.Periodical != nil {
+		buff.WriteString("\"periodical\":")
+		j, err = json.Marshal(t.Periodical)
+		buff.Write(j)
+	}
+	if err != nil {
+		return nil, err
+	}
+	buff.WriteString("}")
+	return buff.Bytes(), nil
+}
+
+const (
+	scheduleDateTimeFormt = "2006-01-02 15:04:05"
+	scheduleTimeFormat    = "15:04:05"
+)
+
+//ScheduleDateTime is
+type ScheduleDateTime struct {
+	Time *time.Time
+}
+
+//MarshalJSON is
+func (t ScheduleDateTime) MarshalJSON() ([]byte, error) {
+	b := make([]byte, 0, len(scheduleDateTimeFormt)+2)
+	b = append(b, '"')
+	if t.Time != nil {
+		b = t.Time.AppendFormat(b, scheduleDateTimeFormt)
+	}
+	b = append(b, '"')
+	return b, nil
+}
+
+//UnmarshalJSON is
+func (t *ScheduleDateTime) UnmarshalJSON(data []byte) error {
+	s := strings.Replace(string(data), "\"", "", 2)
+	if s == "" {
+		return nil
+	}
+	time, err := time.Parse(scheduleDateTimeFormt, s)
+	if err == nil {
+		t.Time = &time
+	}
+	return err
+}
+
+//ScheduleTime is
+type ScheduleTime struct {
+	Time *time.Time
+}
+
+//MarshalJSON is
+func (t ScheduleTime) MarshalJSON() ([]byte, error) {
+	b := make([]byte, 0, len(scheduleTimeFormat)+2)
+	b = append(b, '"')
+	if t.Time != nil {
+		b = t.Time.AppendFormat(b, scheduleTimeFormat)
+	}
+	b = append(b, '"')
+	return b, nil
+}
+
+//UnmarshalJSON is
+func (t *ScheduleTime) UnmarshalJSON(data []byte) error {
+	s := strings.Replace(string(data), "\"", "", 2)
+	if s == "" {
+		return nil
+	}
+	time, err := time.Parse(scheduleTimeFormat, s)
+	if err == nil {
+		t.Time = &time
+	}
+	return err
+}
+
+//TriggerSingleNode is
 type TriggerSingleNode struct {
-	Time string `json:"time"`
+	Time ScheduleDateTime `json:"time"`
 }
+
+//TriggerPeriodicalNode is
 type TriggerPeriodicalNode struct {
-	Start     string `json:"start"`
-	End       string `json:"end"`
-	Time      string `json:"time"`
-	TimeUnit  string `json:"time_unit"`
-	Frequency int    `json:"frequency"`
-	Point     string `json:"point"`
+	Start     ScheduleDateTime `json:"start"`
+	End       ScheduleDateTime `json:"end"`
+	Time      ScheduleTime     `json:"time"`
+	TimeUnit  string           `json:"time_unit"`
+	Frequency int              `json:"frequency"`
+	Point     *string          `json:"point"`
 }
 
-type PushNode struct {
-	Platform     string                `json:"platform"`
-	Audience     string                `json:"audience"`
-	Notification *PushNotificationNode `json:"notification"`
-	Message      *PushMessageNode      `json:"message"`
-	Options      *PushOptionsNode      `json:"options"`
+//ScheduleResponse is
+type ScheduleResponse struct {
+	ScheduleID string      `json:"schedule_id"`
+	RichPush   interface{} `json:"richpush"`
+	SendSource interface{} `json:"sendsource"`
+	SchedulePayload
 }
 
-type PushNotificationNode struct {
-	Alert string `json:"alert"`
-}
-
-type PushMessageNode struct {
-	MsgContent string `json:"msg_content"`
-}
-
-type PushOptionsNode struct {
-	TimeToLive int `json:"time_to_live"`
-}
+//ScheduleUpdateRequest is
 type ScheduleUpdateRequest SchedulePayload
 
+//MarshalJSON is
 func (s ScheduleUpdateRequest) MarshalJSON() ([]byte, error) {
 	var buff bytes.Buffer
 	buff.WriteString("{")
@@ -70,19 +158,19 @@ func (s ScheduleUpdateRequest) MarshalJSON() ([]byte, error) {
 		}
 		buff.WriteString("\"push\":" + string(push) + ",")
 	}
-	buff.WriteString("{},}")
+	buff.Truncate(buff.Len() - 1)
+	buff.WriteString("}")
 	return buff.Bytes(), nil
 }
 
 const (
+	//Single is
 	Single = iota
+	//Periodical is
 	Periodical
 )
-const (
-	N = iota
-	M
-)
 
+//NewScheduleTrigger is
 func NewScheduleTrigger(tp int) *TriggerNode {
 	t := new(TriggerNode)
 	if tp == Single {
@@ -93,27 +181,26 @@ func NewScheduleTrigger(tp int) *TriggerNode {
 	return t
 }
 
-func NewSchedulePush(tp int, content, audience, platform string) *PushNode {
-	p := new(PushNode)
-	p.Audience = audience
-	p.Platform = platform
-	p.Options = &PushOptionsNode{3600}
-	if tp == M {
-		p.Message = &PushMessageNode{
-			MsgContent: content,
-		}
-	} else if tp == N {
-		p.Notification = &PushNotificationNode{
-			Alert: content,
-		}
-	}
-	return p
-}
-
-func NewSchedulePayload(scheduleType, pushType int, content, audience, platform string) *SchedulePayload {
+//NewSchedulePayload is
+func NewSchedulePayload(name string, scheduleType int, push *PushPayload) *SchedulePayload {
 	s := new(SchedulePayload)
+	s.Name = name
 	s.Enabled = true
 	s.Trigger = NewScheduleTrigger(scheduleType)
-	s.Push = NewSchedulePush(pushType, content, audience, platform)
+	s.Push = push
+	return s
+}
+
+//NewSchedulePayloadWithSingle is
+func NewSchedulePayloadWithSingle(name string, single *TriggerSingleNode, push *PushPayload) *SchedulePayload {
+	s := NewSchedulePayload(name, Single, push)
+	s.Trigger.Single = single
+	return s
+}
+
+//NewSchedulePayloadWithPeriodical is
+func NewSchedulePayloadWithPeriodical(name string, periodical *TriggerPeriodicalNode, push *PushPayload) *SchedulePayload {
+	s := NewSchedulePayload(name, Periodical, push)
+	s.Trigger.Periodical = periodical
 	return s
 }

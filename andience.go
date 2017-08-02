@@ -82,6 +82,16 @@ func (audience Audience) MarshalJSON() ([]byte, error) {
 	return json.Marshal(audience.Audiences)
 }
 
+// UnmarshalJSON is
+func (audience *Audience) UnmarshalJSON(data []byte) error {
+	if string(data) == "all" {
+		audience.isAll = true
+	} else {
+		return json.Unmarshal(data, &audience.Audiences)
+	}
+	return nil
+}
+
 func (audience *Audience) addWithAudienceTarget(target *AudienceTarget) {
 	if target.ValueBuilder != nil {
 		if audience.isAll {
