@@ -1,4 +1,6 @@
-# jpush-golang
+[![Build Status](https://travis-ci.org/FeiniuBus/jpush-golang.svg?branch=master)](https://travis-ci.org/FeiniuBus/jpush-golang)
+
+# JPush SDK for Go
 [JPush](https://www.jiguang.cn/) REST API sdk for Golang
 
 ---------------------------------------
