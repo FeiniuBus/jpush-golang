@@ -12,7 +12,7 @@ $ go get -u code.feelbus.cn/golang/jpush-sdk-go/...
 ```
 Make sure [Git is installed](http://git-scm.com/downloads) on your machine and in your system's `PATH`.
 
-Example
+## Example
 1. push api
 ```golang
 
