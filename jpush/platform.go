@@ -64,7 +64,7 @@ func (plat Platform) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON is
 func (plat *Platform) UnmarshalJSON(data []byte) error {
-	if string(data) == "all" {
+	if string(data) == "\"all\"" {
 		plat.isAll = true
 	} else {
 		return json.Unmarshal(data, &plat.DeviceTypes)
