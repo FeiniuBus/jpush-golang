@@ -82,7 +82,7 @@ Make sure [Git is installed](http://git-scm.com/downloads) on your machine and i
 
 3. Update Schedule
 
-```
+```golang
         push := NewPushPayload()
 	push.Audience = new(Audience)
 	push.Audience.SetAlias("78589117623039963DR868754020661958")
