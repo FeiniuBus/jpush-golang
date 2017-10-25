@@ -79,3 +79,31 @@ Make sure [Git is installed](http://git-scm.com/downloads) on your machine and i
 	}
 	fmt.Println(resp)
 ```
+
+3. Update Schedule
+
+```
+        push := NewPushPayload()
+	push.Audience = new(Audience)
+	push.Audience.SetAlias("78589117623039963DR868754020661958")
+	push.Notification = NewNotification()
+	push.Notification.SetAndroid("push schedule test", "这是一条定期推送的测试")
+	push.Platform = new(Platform)
+	push.Platform.Android()
+	push.Options.TimeToLive = 9999
+	push.Options.ApnsProduction = false
+	t2 := time.Now().Add(time.Minute * 15)
+	single := &TriggerSingleNode{Time: ScheduleDateTime{Time: &t2}}
+
+	//set schedule object
+	schedule := NewSchedulePayloadWithSingle("push_schedule_test", single, push).AsUpdate()
+	//create push schedule client
+	client := NewScheduleClient("", "")
+
+	_, err = client.UpdateSchedule(schedule ,scheduleId)
+
+	if err != nil {
+		println(err.Error())
+		return
+	}
+```
