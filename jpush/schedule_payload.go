@@ -204,3 +204,8 @@ func NewSchedulePayloadWithPeriodical(name string, periodical *TriggerPeriodical
 	s.Trigger.Periodical = periodical
 	return s
 }
+
+func (payload *SchedulePayload) AsUpdate() *ScheduleUpdateRequest{
+	up := ScheduleUpdateRequest(*payload)
+	return &up
+}
