@@ -56,7 +56,7 @@ func (plat *Platform) Winphone() {
 // MarshalJSON is
 func (plat Platform) MarshalJSON() ([]byte, error) {
 	if plat.isAll {
-		buffer := bytes.NewBufferString("all")
+		buffer := bytes.NewBufferString("\"all\"")
 		return buffer.Bytes(), nil
 	}
 	return json.Marshal(plat.DeviceTypes)
